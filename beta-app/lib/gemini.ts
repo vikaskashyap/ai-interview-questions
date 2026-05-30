@@ -1,7 +1,7 @@
-import Anthropic from "@anthropic-ai/sdk";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import type { Question } from "./types";
 
-const MODEL = process.env.ANTHROPIC_MODEL || "claude-sonnet-4-6";
+const MODEL = process.env.GEMINI_MODEL || "gemini-2.0-flash";
 
 function buildPrompt(resume: string, jd?: string): string {
   return `You are a senior interviewer with 15+ years of hiring experience. Analyze this candidate resume carefully and prepare a realistic, ready-to-use interview.
@@ -47,39 +47,39 @@ function coerce(raw: any): { risk_areas: string[]; questions: Question[] } {
       model_answer: String(q.model_answer || "—"),
       red_flags: String(q.red_flags || "—"),
     }));
-  if (!questions.length) throw new Error("Claude returned no usable questions");
+  if (!questions.length) throw new Error("Gemini returned no usable questions");
   return {
     risk_areas: Array.isArray(raw?.risk_areas) ? raw.risk_areas.map(String) : [],
     questions,
   };
 }
 
-/** Calls Claude with one retry on transient failure. Throws on hard failure. */
-export async function generateWithClaude(
+/** Calls Gemini with one retry on transient failure. Throws on hard failure. */
+export async function generateWithGemini(
   resume: string,
   jd: string | undefined,
   apiKey: string
 ): Promise<{ risk_areas: string[]; questions: Question[] }> {
-  const client = new Anthropic({ apiKey });
+  const client = new GoogleGenerativeAI(apiKey);
+  const model = client.getGenerativeModel({
+    model: MODEL,
+    generationConfig: {
+      maxOutputTokens: 3500,
+      responseMimeType: "application/json",
+    },
+  });
   const prompt = buildPrompt(resume, jd);
 
   let lastErr: unknown;
   for (let attempt = 0; attempt < 2; attempt++) {
     try {
-      const msg = await client.messages.create({
-        model: MODEL,
-        max_tokens: 3500,
-        messages: [{ role: "user", content: prompt }],
-      });
-      const text = msg.content
-        .map((b: any) => (b.type === "text" ? b.text : ""))
-        .join("");
+      const res = await model.generateContent(prompt);
+      const text = res.response.text();
       return coerce(extractJson(text));
     } catch (e) {
       lastErr = e;
-      // brief backoff before retry
       await new Promise((r) => setTimeout(r, 600));
     }
   }
-  throw lastErr instanceof Error ? lastErr : new Error("Claude generation failed");
+  throw lastErr instanceof Error ? lastErr : new Error("Gemini generation failed");
 }

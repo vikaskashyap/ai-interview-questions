@@ -22,7 +22,7 @@ export interface Question {
 export interface GenerationResult {
   risk_areas: string[];
   questions: Question[];
-  source: "claude" | "demo";
+  source: "gemini" | "demo";
   latency_ms: number;
   generation_id: string;
 }

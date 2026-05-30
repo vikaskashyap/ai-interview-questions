@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { randomUUID } from "crypto";
 import { extractResumeText } from "@/lib/parse";
-import { generateWithClaude } from "@/lib/claude";
+import { generateWithGemini } from "@/lib/gemini";
 import { demoGenerate } from "@/lib/demo";
 import { logEvent, rateLimit } from "@/lib/store";
 
@@ -65,16 +65,16 @@ export async function POST(req: NextRequest) {
   }
 
   const started = Date.now();
-  const apiKey = process.env.ANTHROPIC_API_KEY;
+  const apiKey = process.env.GEMINI_API_KEY;
   let result;
-  let source: "claude" | "demo" = "demo";
+  let source: "gemini" | "demo" = "demo";
 
   if (apiKey) {
     try {
-      result = await generateWithClaude(resumeText, jd || undefined, apiKey);
-      source = "claude";
+      result = await generateWithGemini(resumeText, jd || undefined, apiKey);
+      source = "gemini";
     } catch (e) {
-      console.error("Claude failed, falling back to demo:", e);
+      console.error("Gemini failed, falling back to demo:", e);
       result = demoGenerate(resumeText, jd);
       source = "demo";
     }

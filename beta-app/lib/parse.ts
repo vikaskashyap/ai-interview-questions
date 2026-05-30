@@ -23,6 +23,7 @@ export async function extractResumeText(
   if (isPdf) {
     let pdfParse: (b: Buffer) => Promise<{ text: string }>;
     try {
+      // @ts-expect-error - no type declarations for deep import path
       const mod: any = await import("pdf-parse/lib/pdf-parse.js");
       pdfParse = mod.default || mod;
     } catch {

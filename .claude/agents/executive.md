@@ -1,5 +1,5 @@
 ---
-name: (ಠ_ಠ) executive
+name: executive
 description: Strategic framing, executive communication, and stakeholder alignment specialist. Use when converting technical updates to executive summaries, framing work for leadership, writing business cases, or getting advice on stakeholder communication.
 tools: Read, Grep, Glob, Bash
 model: inherit

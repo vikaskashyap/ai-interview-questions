@@ -1,5 +1,5 @@
 ---
-name: (^◡^) user-researcher
+name: user-researcher
 description: User research analysis, pain point identification, and qualitative insight synthesis. Use when analyzing user interviews, synthesizing research findings, identifying user pain points, refining personas, or extracting insights from support tickets and feedback.
 tools: Read, Grep, Glob, Bash
 model: inherit

@@ -1,5 +1,5 @@
 ---
-name: (@_@) engineer
+name: engineer
 description: Technical feasibility assessment, architecture review, and implementation complexity analysis. Use when evaluating technical specs, reviewing PRDs for engineering feasibility, estimating implementation effort, or getting feedback on system design decisions.
 tools: Read, Grep, Glob, Bash
 model: inherit

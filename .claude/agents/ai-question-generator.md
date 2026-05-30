@@ -1,5 +1,5 @@
 ---
-name: AI Question generator
+name: ai-question-generator
 description: Generate AI Questions based on resume and profile context
 model: inherit
 color: purple

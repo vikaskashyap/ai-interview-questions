@@ -194,7 +194,6 @@ export default function Home() {
             <p className="text-xs text-muted">Read between the lines of any resume <span className="ml-1 px-2 py-0.5 rounded-full border border-edge text-[10px] text-accent">BETA</span></p>
           </div>
         </div>
-        <a href="/admin" className="text-xs text-muted border border-edge rounded-full px-3 py-1.5 hover:text-ink hover:border-accent transition">Admin</a>
       </header>
 
       <div className="grid md:grid-cols-2 gap-5">
@@ -326,8 +325,6 @@ export default function Home() {
           </div>
         </section>
       )}
-
-      <p className="text-center text-muted text-xs mt-10">Resumes are processed in-memory and never stored. Built to PRD: Interview Question Generator From Resume Gaps.</p>
 
       {toast && (
         <div className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-ink text-white font-semibold text-sm px-5 py-2.5 rounded-xl shadow-cardHover z-50">{toast}</div>
